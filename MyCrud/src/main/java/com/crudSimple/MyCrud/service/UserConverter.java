@@ -13,7 +13,7 @@ public class UserConverter {
     public User fromUserDtoToUser(UserDto usersDto) {
         User users = new User();
         users.setId(usersDto.getId());
-        users.setAge(usersDto.getId());
+        users.setAge(usersDto.getAge());
         users.setName(usersDto.getName());
         users.setCreateDate(usersDto.getCreateDate());
         return users;
