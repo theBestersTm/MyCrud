@@ -32,22 +32,21 @@ public class UserServiceImpl implements UserService {
        // User user = userFromDb.orElseThrow(() -> new IllegalArgumentException("USER WITH ID : " + usersDto.getId() + " not found"));
 
        // user.setCreateDate(usersDto.getCreateDate());
-        user.setAge(usersDto.getAge());
-        user.setName(usersDto.getName());
-
-        User savedUser = usersRepository.save(user);
-
-        return usersConverter.fromUserToUserDto(savedUser);
+//        user.setAge(usersDto.getAge());
+//        user.setName(usersDto.getName());
+//
+//        User savedUser = usersRepository.save(user);
+//
+//        return usersConverter.fromUserToUserDto(savedUser);
 
 
         Optional<User> userFromDb = usersRepository.findById(usersDto.getId());
         User user = usersRepository.findById(usersDto.getId()).orElseThrow(() -> new UserNotFindException("User doesnt exist"));
 
-        book.setAuthor(bookDto.getAuthor());
-        book.setName(bookDto.getName());
-        book.setDescription(bookDto.getDescription());
-        book.setCategory(category);
-        return booksRepository.save(book);
+        user.setCreateDate(usersDto.getCreateDate());
+        user.setAge(usersDto.getAge());
+        user.setName(usersDto.getName());
+        return usersConverter.fromUserToUserDto(user);
 
     }
 
