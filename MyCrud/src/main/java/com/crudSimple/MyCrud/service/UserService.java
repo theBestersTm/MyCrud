@@ -12,6 +12,5 @@ public interface UserService {
 
     UserDto findByLogin(String login);
     UserDto findById(Integer id) throws UserNotFindException;
-    //UserDto findById(Integer id);
     List<UserDto> findAll();
 }
