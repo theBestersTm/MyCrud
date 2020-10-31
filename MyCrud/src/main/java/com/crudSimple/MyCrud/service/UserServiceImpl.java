@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
        // User user = userFromDb.orElseThrow(() -> new IllegalArgumentException("USER WITH ID : " + usersDto.getId() + " not found"));
 
-        user.setCreateDate(usersDto.getCreateDate());
+       // user.setCreateDate(usersDto.getCreateDate());
         user.setAge(usersDto.getAge());
         user.setName(usersDto.getName());
 
