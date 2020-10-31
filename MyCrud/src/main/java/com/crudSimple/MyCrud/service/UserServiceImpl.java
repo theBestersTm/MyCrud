@@ -5,36 +5,40 @@ import com.crudSimple.MyCrud.entity.dto.UserDto;
 import com.crudSimple.MyCrud.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.xml.bind.ValidationException;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.isNull;
+
+//Рефакторинг age, crud postman, optional class java, data, delete logs, delete status code noContent
 @AllArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository usersRepository;
     private final UserConverter usersConverter;
 
 
-
     @Override
-    public UserDto saveUser(UserDto usersDto) throws ValidationException {
-        validateUserDto(usersDto);
+    public UserDto saveUser(UserDto usersDto) {
+
         User savedUser = usersRepository.save(usersConverter.fromUserDtoToUser(usersDto));
         return usersConverter.fromUserToUserDto(savedUser);
     }
 
-    private void validateUserDto(UserDto usersDto) throws ValidationException {
-        if (isNull(usersDto)) {
-            throw new ValidationException("Object user is null");
-        }
-        if (isNull(usersDto.getName()) || usersDto.getName().isEmpty()) {
-            throw new ValidationException("Login is empty");
-        }
+    public UserDto updateUser(UserDto usersDto) {
+        Optional<User> userFromDb = usersRepository.findById(usersDto.getId());
+
+        User user = userFromDb.orElseThrow(() -> new IllegalArgumentException("USER WITH ID : " + usersDto.getId() + " not found"));
+
+        user.setCreateDate(usersDto.getCreateDate());
+        user.setAge(usersDto.getAge());
+        user.setName(usersDto.getName());
+
+        User savedUser = usersRepository.save(user);
+
+        return usersConverter.fromUserToUserDto(savedUser);
     }
+
 
     @Override
     public void deleteUser(Integer userId) {
@@ -45,9 +49,17 @@ public class UserServiceImpl implements UserService{
     public UserDto findByLogin(String name) {
         User users = usersRepository.findByName(name);
         if (users != null) {
+
             return usersConverter.fromUserToUserDto(users);
+
+
         }
         return null;
+    }
+
+    @Override
+    public UserDto findById(Integer id) {
+        return usersRepository.findById(id).map(usersConverter::fromUserToUserDto).orElse(null);
     }
 
     @Override

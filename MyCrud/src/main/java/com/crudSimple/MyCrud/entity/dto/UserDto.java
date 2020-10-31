@@ -1,9 +1,7 @@
 package com.crudSimple.MyCrud.entity.dto;
 
-
 import com.crudSimple.MyCrud.entity.User;
 import lombok.*;
-
 import java.util.Date;
 
 @Data
